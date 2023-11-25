@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Editar Livros</title>
+    <title>Excluir Livros</title>
     <link rel="shortcut icon" href="imagens/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 </head>
@@ -25,22 +25,22 @@
 ?>
 
 <!--id_livro	id_autor	titulo	fk_genero	data_publicacao	-->
-<div class="w3-container w3-teal">
-    <h2>Editar Livros</h2>
+<div class="w3-container w3-red">
+    <h2>Excluir Livros</h2>
 </div>
 
 <form method="post" class="w3-container">
     <br>
-    <label class="w3-text-teal"><b>Titulo</b></label>
+    <label class="w3-text-red"><b>Titulo</b></label>
     <input class="w3-input w3-border w3-light-grey" type="text" name="titulo">
 
     
     <br>
 
-    <label class="w3-text-teal"><b>Data de Publicação</b></label>
+    <label class="w3-text-red"><b>Data de Publicação</b></label>
     <input class="w3-input w3-border w3-light-grey" type="date" name="data_publicacao">
     <br>
-    <label class="w3-text-teal"><b>Gênero</b></label>
+    <label class="w3-text-red"><b>Gênero</b></label>
     <select class="w3-select" name="genero">
         <option value="" disabled selected>Selecione</option>
         <?php
@@ -57,7 +57,7 @@
         ?>>
     </select>
     <br><br>
-    <label class="w3-text-teal"><b>Autor</b></label>
+    <label class="w3-text-red"><b>Autor</b></label>
     <select class="w3-select" name="autor">
         <option value="" disabled selected>Selecione</option>
         <?php
@@ -91,7 +91,7 @@
         
 
         // Número de resultados por página
-        $resultados_por_pagina = 6;
+        $resultados_por_pagina = 5;
 
         // Página atual (caso não esteja definida, é a primeira página)
         $pagina_atual = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
@@ -130,7 +130,10 @@
         {
             $query .= " AND ".implode(" AND ", $filtro);
         }
-        
+
+        // Construção da consulta com LIMIT
+        $query .= " ORDER BY titulo";
+
         // Construção da consulta com LIMIT
         $query .= " LIMIT $offset, $resultados_por_pagina";
 
@@ -165,7 +168,7 @@
                         <td>$data_publicacao</td>
                         <td>$autor</td>
                         <td>$genero</td>
-                        <td><a class='w3-button w3-black w3-round-large' href='editlivroscript.php?id=$id' role='button'>Editar</a></td>
+                        <td><a class='w3-button w3-red w3-round-large' onclick='excluirlivro($id)' role='button'>Excluir</a></td>
                     </tr>";
             }
 
@@ -192,7 +195,7 @@
             echo "<div class='w3-bar w3-center'>";
             for ($i = 1; $i <= $num_paginas; $i++) 
             {
-                echo "<a href='consultalivros.php?pagina=$i' class='w3-button w3-circle w3-teal'>$i</a> ";
+                echo "<a href='excluirlivros.php?pagina=$i' class='w3-button w3-circle w3-red'>$i</a> ";
             }
             echo "</div></div>";
 
@@ -208,5 +211,27 @@
 
     }
 ?>
+
+<script>
+    function excluirlivro($id) 
+    {
+        // Exibe um diálogo de confirmação
+        let confirmacao = confirm("Tem certeza de que deseja excluir?");
+
+        // Se o usuário clicar em "OK" no diálogo de confirmação
+        if (confirmacao) 
+        {
+            alert("Item excluído!");
+            <?php
+                $queryexc = "DELETE FROM `livros` WHERE `livros`.`id_livro` = $id";
+                $resultexc = mysqli_query($conexao,$queryexc);
+                header("Refresh:1");
+            ?>
+        } else 
+        {
+                alert("Cancelado com sucesso."); 
+        }
+    }
+</script>
 </body>
 </html>
