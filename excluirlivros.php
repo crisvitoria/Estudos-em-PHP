@@ -75,7 +75,7 @@
     </select>
 
     <br><br>
-    <button class="w3-btn w3-blue-grey" name="consultar">Consultar</button>
+    <button class="w3-btn w3-blue-grey" name="consultar">CONSULTAR</button>
     <button class="w3-btn w3-blue-grey" type = "reset">Limpar</button>
     <a class="w3-btn w3-blue-grey" href="index.php" target="_self" rel="prev">Página Inicial</a>
 
